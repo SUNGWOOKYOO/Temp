@@ -129,28 +129,32 @@ def minCut(adj_list, adj_mat, residual_mat, source):
                     total = total + adj_mat[node][neighbor.id]
     print (total)
 
+if __name__ == "__main__":
+    # Graph Parsing from '.txt' file to a numpy 2D array
+    file = pd.read_csv(INPUT_FILE, sep=' ', header=None)
+    adj_mat = np.array(file)
+    adj_mat = adj_mat[:, :GRAPH_SIZE]
 
-# Graph Parsing from '.txt' file to a numpy 2D array
-file = pd.read_csv(INPUT_FILE, sep=' ', header=None)
-adj_mat = np.array(file)
-adj_mat = adj_mat[:, :GRAPH_SIZE]
+    # Make Adjacency List from Adjacency Matrix
+    adj_list = []
+    for i in range(GRAPH_SIZE):
+        adj_list.append([])
+        adj_list[i] = []
 
-# Make Adjacency List from Adjacency Matrix
-adj_list = []
-for i in range(GRAPH_SIZE):
-    adj_list.append([])
-    adj_list[i] = []
-
-for row in range(GRAPH_SIZE):
-    for col in range(GRAPH_SIZE):
-        if adj_mat[row][col] != -1:
-            new_node = Node(col, adj_mat[row][col])
-            adj_list[row].append(new_node)
+    for row in range(GRAPH_SIZE):
+        for col in range(GRAPH_SIZE):
+            if adj_mat[row][col] != -1:
+                new_node = Node(col, adj_mat[row][col])
+                adj_list[row].append(new_node)
 
 
-BFS(adj_list, 1, 150)
+    BFS(adj_list, 1, 150)
 
-flow_mat = EdmondKarf(adj_list, adj_mat, 1, 150)
+    flow_mat = EdmondKarf(adj_list, adj_mat, 1, 150)
 
-residual_mat = adj_mat - abs(flow_mat)
-minCut(adj_list, adj_mat, residual_mat, 1)
+    residual_mat = adj_mat - abs(flow_mat)
+    minCut(adj_list, adj_mat, residual_mat, 1)
+else:
+    print("This part can be showed when only being imported ")
+
+
